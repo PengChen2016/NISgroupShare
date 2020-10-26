@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- version:v181124 -->
+<!-- version:v201026 -->
 <!-- contact:pengchen -->
 <!-- TODO: -->
 <!-- 1. 负源参数计算（如PIC参数）；参数换算（见谢华生表最后） -->
@@ -16,7 +16,7 @@
     
     <!--层叠样式表css-->
     <!--使用外部css文件-->
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" href="style.css">
     <!--使用外置js代码-->
     <!--<script src="calculator.js"></script>-->
@@ -25,14 +25,14 @@
     <!-- 在正文中临时转换公式为图片的方式，快，但只适合少数公式 -->
     <!-- <img src="http://latex.codecogs.com/gif.latex?\sqrt{a^2+b^2}" title="\sqrt{a^2+b^2}" /> -->
     <!-- 以下来自http://latex.codecogs.com/eqneditor/integration/htmlequations.php，然后正文中用$Latex公式$。由于$在js中有他用，建议限定在<p></p>等标签内 -->
-    <script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+    <script type="text/javascript" src="latexit.js"></script>
     <script type="text/javascript">
         LatexIT.add('p',true);
     </script>
 </head>
 
 <body class="w3-light-grey">
-    <main class="main-container">
+        <main class="main-container">
         <!-- <header class="w3-container w3-center w3-padding-32">  -->
         
         <!--header：对主页的介绍-->
@@ -42,22 +42,28 @@
             <h1><b>负源计算器</b></h1>
 			<!--p：创建段落。实际起换行作用，而文本中的换行符不会显示。文本中的空格显示。-->
             <!--考虑加个框-->
+            <p><h2>目录</h2></p>
             <label for="p-electron-density"><u>等离子体参数计算</u>&nbsp&nbsp&nbsp&nbsp&nbsp </label>
-            <a href="#formula"><u>计算式</u></a>
+            <p>
+            <label for="filter-magnetic-field-B"><u>负源参数计算（待更新）</u>&nbsp&nbsp&nbsp&nbsp&nbsp </label></p>
             <!--TODO：待修改for属性为相关Section第一个控件的ID-->
-            <label for="filter-magnetic-field-B">&nbsp&nbsp&nbsp&nbsp&nbsp<u>负源参数计算（待更新）</u>&nbsp&nbsp&nbsp&nbsp&nbsp </label>
-            <label for="p-electron-thermal-velocity"><u>参数换算（待更新）</u>&nbsp&nbsp&nbsp&nbsp&nbsp </label>
-            <a href="#Note"><u>Note</u></a>
-            <p><strong>主要基于SI单位制计算。部分参数需自行换算，见<label for="filter-magnetic-field-B"><u>参数换算</u></label>。</strong></p>
+            <p>
+            <label for="p-electron-thermal-velocity"><u>单位换算（待更新）</u>&nbsp&nbsp&nbsp&nbsp&nbsp </label></p>
+            <p><a href="#formula"><u>计算公式</u></a></p>
+            <p><a href="#Acknowledgement"><u>Acknowledgement</u></a></p>
+            <p><a href="#Reference"><u>Reference</u></a></p>
+            <p><a href="#Note"><u>Note</u></a></p>
+            <br></br>
+            <p>注：若无说明，则使用SI单位。</p>
             <!--hr:水平线。目前只表现为空白行。-->
             <hr/>
         </header>
         
-        <h1>等离子体参数计算</h1>
+        <h2>等离子体参数计算</h2>
         <!--section：本节所有ID前加p- -->
         <section class="form-section-container p-input">
-            <h2>输入参数</h2>
-            <p>各输入参数默认值为IPP BATMAN扩展腔末端的大致参数。</p>
+            <h3>输入参数</h3>
+            <p>各输入参数默认值为IPP BATMAN 过渡层 的大致值。</p>
             <!--form：表单。允许用户通过控件输入内容,控件类型及实现见http://www.runoob.com/html/html-forms.html。-->
             <!--表单ID为input，名为input。ID唯一，name可重复，方法为POST（不要用GET）-->
             <form class="form-container" NAME="input" ID="p-input" method=POST>
@@ -72,33 +78,34 @@
                 </div>
                 
                 <div>
-                    <label for="electron-temperature">电子温度T<sub>e</sub> (eV)</label>
+                    <label for="p-electron-temperature">电子温度T<sub>e</sub> (eV)</label>
                     <input type="text" id="p-electron-temperature" name=Te value=2 >
                 </div>
+                <!-- 标签p，br均无法换行，起到类似标签div空白占位效果 -->
 
                 <div>
-                    <label for="positive-ion-temperature">正离子温度T<sub>i</sub> (eV)</label>
-                    <input type="text" id="p-positive-ion-temperature" name=Tpi value=0.5 >
+                    <label for="p-positive-ion-temperature">离子温度T<sub>i</sub> (eV)</label>
+                    <input type="text" id="p-positive-ion-temperature" name=Ti value=0.5 >
                 </div>
 
                 <div>
-                    <label for="p-positive-ion-mass-num">正离子质量数A<sub>i</sub></label>
-                    <input type="text" id="p-positive-ion-mass-num" name=Api value=1 >
+                    <label for="p-positive-ion-mass-num">离子质量数A<sub>i</sub></label>
+                    <input type="text" id="p-positive-ion-mass-num" name=Ai value=1 >
                 </div>
 
                 <div>
-                    <label for="p-positive-ion-charge-num">正离子电荷数Z<sub>i</sub></label>
-                    <input type="text" id="p-positive-ion-charge-num" name=Zpi value=1 >
+                    <label for="p-positive-ion-charge-num">离子电荷数Z<sub>i</sub></label>
+                    <input type="text" id="p-positive-ion-charge-num" name=Zi value=1 >
                 </div>
-                
+
                 <div>
-                    <label for="p-magnetic-field-B">磁感应强度B (T)</label>
-                    <input type="text" id="p-magnetic-field-B" name=B value=1.1 >
+                    <label for="p-magnetic-field-B">磁感应强度B (mT)</label>
+                    <input type="text" id="p-magnetic-field-B" name=B value=9 >
                 </div>
                 
                 <div>
                     <label for="p-electric-field-E">电场强度E (V/m)</label>
-                    <input type="text" id="p-electric-field-E" name=E value=1e4 >
+                    <input type="text" id="p-electric-field-E" name=E value=2e5 >
                 </div>
             </form>
             <!-- <p>说明</p> -->
@@ -111,45 +118,25 @@
             <input TYPE="reset" class="button" VALUE="重置" onClick="p_clear(this.form);" form="p-input">
         </section>
 
-        <h2>计算结果</h2>
+        <h3>计算结果</h3>
         <section class="form-section-container p-output-frequency">
-            <p><h3>频率</h3></p>
+            <p><h4>频率</h4></p>
             <form class="form-container" NAME="output-frequency" id="p-output-frequency" method=POST>
                 <div>
-                    <label>等离子体(角)频率ω<sub>pe</sub> (rad/s)</label>
+                    <label>等离子体频率ω<sub>pe</sub> (rad/s)</label>
                     <input type="text" id="p-plasma-frequency" name=omega_pe readonly="readonly">
                 </div>
 
                 <div>
-                    <label>逆等离子体(角)频率1/ω<sub>pe</sub><br />时间特征长度</label>
-                    <input type="text" id="p-inverse-plasma-frequency" name=inverse_omega_pe readonly="readonly" >
-                </div>
-
-                <div>
-                    <label>电子回旋(角)频率ω<sub>ce</sub> (rad/s)</label>
+                    <label>电子回旋角频率ω<sub>ce</sub> (rad/s)</label>
                     <input type="text" id="p-electron-cyclotron-frequency" name=omega_ce readonly="readonly" >
                 </div>
 
                 <div>
-                    <label>离子回旋(角)频率ω<sub>ci</sub> (rad/s)</label>
+                    <label>离子回旋角频率ω<sub>ci</sub> (rad/s)</label>
                     <input type="text" id="p-ion-cyclotron-frequency" name=omega_ci readonly="readonly" >
                 </div>
                 
-                <div>
-                    <label>等离子体频率f<sub>pe</sub> (Hz)</label>
-                    <input type="text" id="p-plasma-frequency1" name=f_pe readonly="readonly">
-                </div>
-
-                <div>
-                    <label>电子回旋频率f<sub>ce</sub> (Hz)</label>
-                    <input type="text" id="p-electron-cyclotron-frequency1" name=f_ce readonly="readonly" >
-                </div>
-
-                <div>
-                    <label>离子回旋频率f<sub>ci</sub> (Hz)</label>
-                    <input type="text" id="p-ion-cyclotron-frequency1" name=f_ci readonly="readonly" >
-                </div>
-
 <!--                 <div>
                     <label for="elec-plasma-freq">电子碰撞频率 (Hz)</label>
                     <input type="text" id="elec-plasma-freq" name=f_pe >
@@ -159,19 +146,41 @@
             <!-- <p>说明</p>   -->
         </section>
 
+        <section class="form-section-container p-output-time">
+            <p><h4>时间</h4></p>
+            <form class="form-container" NAME="output-time" id="p-output-time" method=POST>
+                <div>
+                    <label>逆等离子体频率ω<sub>pe</sub><sup>-1</sup></label>
+                    <input type="text" id="p-inverse-plasma-frequency" name=inverse_omega_pe readonly="readonly" >
+                </div>
+
+                <div>
+                    <label>电子回旋周期T<sub>ce</sub> (rad/s)</label>
+                    <input type="text" id="p-electron-cyclotron-period" name=T_ce readonly="readonly" >
+                </div>
+
+                <div>
+                    <label>离子回旋周期T<sub>ci</sub> (rad/s)</label>
+                    <input type="text" id="p-ion-cyclotron-period" name=T_ci readonly="readonly" >
+                </div>
+                
+            </form>
+            <!-- <p>说明</p>   -->
+        </section>
+
         <section class="form-section-container p-output-length">
-            <p><h3>长度</h3></p>
+            <p><h4>长度</h4></p>
             <form class="form-container" name="output-length" id="p-output-length" method=post>
                 <div>
                     <label>徳拜长度λ<sub>De</sub> (m)</label>
                     <input type="text" id="p-debye-length" name=lambda_d readonly="readonly" >
                 </div>
                 <div>
-                    <label>电子拉莫尔半径r<sub>ce</sub> (m)</label>
+                    <label>电子拉莫尔半径r<sub>ce</sub> (mm)</label>
                     <input type="text" id="p-electron-larmor-radius" name=r_ce readonly="readonly" >
                 </div>
                 <div>
-                    <label>离子拉莫尔半径r<sub>ci</sub> (m)</label>
+                    <label>离子拉莫尔半径r<sub>ci</sub> (mm)</label>
                     <input type="text" id="p-ion-larmor-radius" name=r_ci readonly="readonly" >
                 </div>
 <!--                 <div>
@@ -182,15 +191,15 @@
         </section>
 
         <section class="form-section-container p-output-velocity">
-            <p><h3>速度</h3></p>
+            <p><h4>速度</h4></p>
             <form class="form-container" name="output-velocity" id="p-output-velocity" method=post>
                 <div>
-                    <label>电子特征热速度v<sub>te</sub> (m/s)<br />thermal velocity<br/></label>
+                    <label>电子热速度v<sub>the</sub> (m/s)<br />thermal velocity<br/></label>
                     <input type="text" id="p-electron-thermal-velocity" name=v_te readonly="readonly" >
                 </div>
                 
                 <div>
-                    <label>电子最可几速度v<sub>e</sub> (m/s)<br/>most probable speed / thermal speed</label>
+                    <label>电子最可几速度v<sub>e</sub> (m/s)<br/>most probable speed</label>
                     <input type="text" id="p-electron-probable-speed" name=v_e readonly="readonly" >
                 </div>
                 
@@ -200,7 +209,7 @@
                 </div>
 
                 <div>
-                    <p><label>电子平均热速度 $\overline{v}_{\rm e} (m/s)$<br \>mean thermal speed</label></p>
+                    <p><label>电子平均速度 $\overline{v}_{\rm e} $ (m/s)<br \>mean thermal speed</label></p>
                     <input type="text" id="p-electron-mean-velocity" name=v_meane readonly="readonly" >
                 </div>
                 
@@ -210,46 +219,58 @@
                 </div>
                 
                 <div>
-                    <label>离子最可几速度v<sub>i</sub> (m/s)<br/><br/></label>
-                    <input type="text" id="p-ion-probable-speed" name=v_i readonly="readonly" >
+                    <label>离子热速度v<sub>thi</sub> (m/s)<br/>thermal velocity<br/></label>
+                    <input type="text" id="p-ion-thermal-velocity" name=v_ti readonly="readonly" >
                 </div>
             </form>
             <!-- 格式好丑，但调起来麻烦 -->
-        </section>
-        <p>2018.11.24 基于默认参数的计算结果，与谢华生-等离子体物理基本参数计算器.xls一致。后者见http://hsxie.me/cppbook/tmp/cpp_code_170408.tgz</p>
-        
-        <!--section：本节不计算 -->
+                <p>2018.11.24 benchmark: 基于默认参数，本网页计算结果与谢华生-等离子体物理基本参数计算器.xls [1] 计算结果一致。</p>
+                </section>
+        <br><br/>
         <section class="form-section-container formula">
-            <h2 id="formula">计算式</h2>
+            <h2 id="formula">计算公式</h2>
             <h3>常数</h3>
-            
-            <h3>等离子体参数计算</h3>
+            <p>$\epsilon\rm_0=8.854 \times 10^{-12}$</p>
+            <p>$e\rm=1.6 \times 10^{-19}$</p>
+            <p>$m\rm_e=9.109 \times 10^{-31}$</p>
+            <p>$m\rm_{proton}=1.67 \times 10^{-27}$</p>
+            <h3>等离子体参数计算 [2]</h3>
+            <p></p>
             <p>准中性近似：正离子密度 n<sub>i</sub>≈n<sub>e</sub></p>
             <!-- 频率 -->
-            <p>$\omega_{\rm pe}=\sqrt{\frac{n_{\rm e0}e^2}{{\epsilon}_0m_{\rm e}}}=5.641\times 10\times \sqrt{n_{\rm e0}}$</p>
-            <p>$\omega_{\rm ce}=\frac{eB}{m_{\rm e}}=1.759\times 10^{11}\times B$</p>   
+            <p>$\omega_{\rm pe}=\sqrt{\frac{n_{\rm e0}e^2}{{\epsilon}_0m_{\rm e}}}=5.641 \times 10 \times \sqrt{n_{\rm e0}}$</p>
+            <p>$\omega_{\rm ce}=\frac{eB}{m_{\rm e}}=1.759 \times 10^{11}\times B$</p>   
             <p>$\omega_{\rm ci}=\frac{qB}{m_{\rm i}}=\frac{ZeB}{Am_{\rm H}}=9.577\times 10^{7}\times B\times \frac{Z}{A}$</p>
             <p>$f=\frac{2\pi}{\omega}$</p>
             <!-- 长度 -->
             <p>$\lambda_{\rm De}=\sqrt{\frac{{\epsilon_0}k_{\rm B}{T_{\rm e}}}{n_{\rm e0}e^2}}=7.439\times 10^{3}\times \sqrt{\frac{T_{\rm e}({\rm eV})}{n_{\rm e0}}}$</p>
-            <p>$r_{\rm c}=\frac{mv_{\rm t}}{qB}=\frac{v_{\rm t}}{\omega_{\rm c}}$</p>
+            <p>$r_{\rm c}=\frac{mv_{\rm th}}{qB}=\frac{v_{\rm th}}{\omega_{\rm c}}$</p>
             <!-- 速度 -->
-            <p>$v_{\rm te}=\sqrt{\frac{k_{\rm B}T_{\rm e}}{m_{\rm e}}}=4.194\times 10^{5}\times \sqrt{T_{\rm e}({\rm eV}))}$</p>
-            <p>$v_{\rm e}=\sqrt{\frac{2k_{\rm B}T_{\rm e}}{m_{\rm e}}}=5.931\times 10^{5}\times \sqrt{T_{\rm e}({\rm eV}))}$</p>
+            <p>$v_{\rm the}=\sqrt{\frac{k_{\rm B}T_{\rm e}}{m_{\rm e}}}=4.194\times 10^{5}\times \sqrt{T_{\rm e}({\rm eV}))}$</p>
+            <p>$v_{\rm e}=\sqrt{\frac{2k_{\rm B}T_{\rm e}}{m_{\rm e}}}$</p>
             <p>$\overline{v}_{\rm e}=\sqrt{\frac{8k_{\rm B}T_{\rm e}}{\pi m_{\rm e}}}$</p>
             <p>$v_{\rm rmse}=\sqrt{\frac{3k_{\rm B}T_{\rm e}}{m_{\rm e}}}$</p>
-            <p>$v_{\rm t}:v:\overline{v}:v_{\rm rms}=1:1.414:1.596:1.732$</p>
+            <p>$v_{\rm th}:v:\overline{v}:v_{\rm rms}=1:1.414:1.596:1.732$</p>
             <p>$v_{\rm bohm}=\sqrt{\frac{k_{\rm B}T_{\rm e}}{m_{\rm i}}}$</p>
             <p>$v_{\rm i}=\sqrt{\frac{2k_{\rm B}T_{\rm i}}{m_{\rm i}}}=1.384\times 10^{4}\times \sqrt{\frac{T_{\rm i}({\rm eV})}{A}}$</p>
         </section>
-        
-                <!--section：本节不计算 -->
+        <br></br>
+        <section class="form-section-container formula">
+            <h2 id="Acknowledgement">Acknowledgement</h2>
+            <p>该网页的制作动机，源自谢华生网络化编程的想法[1]。<p />
+            <p>网页制作参考了 <a href="https://github.com/rohong/plasma-calculator">rohong/plasma-calculator</a> 等开源资源，一并感谢。</strong></p>
+        </section>
+        <br></br>
+        <section class="form-section-container formula">
+            <h2 id="Reference">Reference</h2>
+            <p>[1] 谢华生，计算等离子体物理导论，科学出版社，北京，2018. http://hsxie.me/cppbook/</p>
+            <p>[2] 马腾才, 胡希伟 & 陈银华，等离子体物理原理，中国科学技术大学出版社，合肥，2012</p>
+        </section>
+        <br></br>
         <section class="form-section-container formula">
             <h2 id="Note">Note</h2>
             <p><strong>1. We do not take responsability for any potential errors that may affect your work. </strong></p>
-            <p><strong>2. 临时学了下HTML制作，如有错漏，敬请见谅。请将详细错误信息或改进意见邮件给peng_chen2016@hust.edu.cn，十分感谢！ </strong></p>
-            <p><strong>3. 致谢：<br />该网页的制作动机，源自 谢华生. 计算等离子体物理导论, 科学出版社, 2018 中等离子体物理参数计算器网络化编程的想法。<br />部分公式参考自 马腾才,胡希伟 and 陈银华. 等离子体物理原理, 中国科学技术大学出版社, 2012<br />代码改自https://github.com/rohong/plasma-calculator，我会在之后fork该项目。</strong></p>
-
+            <p>2. 临时学了下HTML制作，如有错漏，敬请见谅。请将详细错误信息或改进意见邮件给peng_chen2016@hust.edu.cn，十分感谢！</p>
         </section>
     </main>
 
