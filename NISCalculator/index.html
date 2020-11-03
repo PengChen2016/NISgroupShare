@@ -1,47 +1,20 @@
 <!DOCTYPE html>
-<!-- version:v201026 -->
-<!-- contact:pengchen -->
-<!-- TODO: -->
-<!-- 1. 负源参数计算（如PIC参数）；参数换算（见谢华生表最后） -->
-<!-- 2. 谢华生：徳拜球内电子书，电子-电子库仑碰撞参数，E×B漂移速度 -->
-<!-- 3. 李小飞：周期，预计稳定的时间长度 -->
 <html>
 <head>
-    <!--字符集。GBK：含繁体字-->
     <meta charset="utf-8">
-    
-    <!-- <title>Plasma Parameters Calculator</title> -->
-    
+    <title>负源计算器</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <!--层叠样式表css-->
-    <!--使用外部css文件-->
     <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" href="style.css">
-    <!--使用外置js代码-->
-    <!--<script src="calculator.js"></script>-->
-    <!-- 使用网络（外置）js代码。通过CDN加载js以显示tex公式，加载较慢。语法见https://zh.wikipedia.org/zh/Help:%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F -->
-    <!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
-    <!-- 在正文中临时转换公式为图片的方式，快，但只适合少数公式 -->
-    <!-- <img src="http://latex.codecogs.com/gif.latex?\sqrt{a^2+b^2}" title="\sqrt{a^2+b^2}" /> -->
-    <!-- 以下来自http://latex.codecogs.com/eqneditor/integration/htmlequations.php，然后正文中用$Latex公式$。由于$在js中有他用，建议限定在<p></p>等标签内 -->
     <script type="text/javascript" src="latexit.js"></script>
     <script type="text/javascript">
         LatexIT.add('p',true);
     </script>
 </head>
-
 <body class="w3-light-grey">
         <main class="main-container">
-        <!-- <header class="w3-container w3-center w3-padding-32">  -->
-        
-        <!--header：对主页的介绍-->
-        <header> 
-        <!--根据 HTML5 规范，在没有其他合适标签更合适时，才应该把 <b> 标签作为最后的选项。HTML5 规范声明：应该使用 <h1> - <h6> 来表示标题，使用 <em> 标签来表示强调的文本-斜体，使用 <strong> 标签来表示重要文本-加粗，应该使用 <mark> 标签来表示标注的/突出显示的文本，用<u>表示下划线。
-        -->
+        <header>
             <h1><b>负源计算器</b></h1>
-			<!--p：创建段落。实际起换行作用，而文本中的换行符不会显示。文本中的空格显示。-->
-            <!--考虑加个框-->
             <p><h2>目录</h2></p>
             <label for="p-electron-density"><u>等离子体参数计算</u>&nbsp&nbsp&nbsp&nbsp&nbsp </label>
             <p>
@@ -60,15 +33,12 @@
         </header>
         
         <h2>等离子体参数计算</h2>
-        <!--section：本节所有ID前加p- -->
         <section class="form-section-container p-input">
             <h3>输入参数</h3>
             <p>各输入参数默认值为IPP BATMAN 过渡层 的大致值。</p>
             <!--form：表单。允许用户通过控件输入内容,控件类型及实现见http://www.runoob.com/html/html-forms.html。-->
-            <!--表单ID为input，名为input。ID唯一，name可重复，方法为POST（不要用GET）-->
+            <!--表单ID为p-input，名为input。ID唯一，name可重复，方法为POST（不要用GET）-->
             <form class="form-container" NAME="input" ID="p-input" method=POST>
-                
-                <!--div：分隔代码，不显示在大纲。一般处理样式。-->
                 <div>
                     <!--label：为input元素定义标记。鼠标点击label时焦点会自动转移到控件内。-->
                     <!--for属性要填相关控件的ID。-->
@@ -76,33 +46,27 @@
                     <!--input：控件。输入值的类型为数，则无法输入其他类型。name被js引用-->
                     <input type="text" id="p-electron-density" name=ne value=4e17 >
                 </div>
-                
                 <div>
                     <label for="p-electron-temperature">电子温度T<sub>e</sub> (eV)</label>
                     <input type="text" id="p-electron-temperature" name=Te value=2 >
                 </div>
                 <!-- 标签p，br均无法换行，起到类似标签div空白占位效果 -->
-
                 <div>
                     <label for="p-positive-ion-temperature">离子温度T<sub>i</sub> (eV)</label>
                     <input type="text" id="p-positive-ion-temperature" name=Ti value=0.5 >
                 </div>
-
                 <div>
                     <label for="p-positive-ion-mass-num">离子质量数A<sub>i</sub></label>
                     <input type="text" id="p-positive-ion-mass-num" name=Ai value=1 >
                 </div>
-
                 <div>
                     <label for="p-positive-ion-charge-num">离子电荷数Z<sub>i</sub></label>
                     <input type="text" id="p-positive-ion-charge-num" name=Zi value=1 >
                 </div>
-
                 <div>
                     <label for="p-magnetic-field-B">磁感应强度B (mT)</label>
                     <input type="text" id="p-magnetic-field-B" name=B value=9 >
                 </div>
-                
                 <div>
                     <label for="p-electric-field-E">电场强度E (V/m)</label>
                     <input type="text" id="p-electric-field-E" name=E value=2e5 >
@@ -110,12 +74,23 @@
             </form>
             <!-- <p>说明</p> -->
         </section>
-        
         <section>
             <!--按按钮触发事件：调用computeform函数，以当前表单为参数，该表单名为input。-->
-            <!--value为按钮显示的文字.form 属性是 HTML 5 中的新属性，规定按钮属于一个或多个表单，值必须是按钮所属表单的 id；如需引用一个以上的表单，使用空格分隔的列表。-->
+            <!--value为按钮显示的文字. form 属性是 HTML 5 中的新属性，规定按钮属于一个或多个表单，值必须是按钮所属表单的 id；如需引用一个以上的表单，使用空格分隔的列表。-->
             <input TYPE="button" class="button" VALUE="计算" onClick="p_compute(this.form);" form="p-input">
             <input TYPE="reset" class="button" VALUE="重置" onClick="p_clear(this.form);" form="p-input">
+            <!-- 调用calculator.js中的p_compute和p_clear函数 -->
+            <input TYPE="button" class="button" VALUE="测试" onClick="p_test(this.form);" form="p-input">
+        </section>
+        <section class="form-section-container p-output-test" id="p-output-test-section" style="display:none">
+        <p>使用各输入参数默认值，本网页计算结果与 谢华生-等离子体物理基本参数计算器.xls [1] 计算结果做对比，容差为百分之一。详情请参见js代码。</p>
+            <p><h3>测试结果</h3></p>
+            <form class="form-container" NAME="output-test" id="p-output-test" method=POST>
+                <div>
+                    <!-- <label>等离子体参数计算</label> -->
+                    <input type="text" id="p-test1-result" name=test1_result readonly="readonly">
+                </div>
+            </form>
         </section>
 
         <h3>计算结果</h3>
@@ -123,51 +98,53 @@
             <p><h4>频率</h4></p>
             <form class="form-container" NAME="output-frequency" id="p-output-frequency" method=POST>
                 <div>
-                    <label>等离子体频率ω<sub>pe</sub> (rad/s)</label>
+                    <label>电子等离子体频率ω<sub>pe</sub> [rad/s]</label>
                     <input type="text" id="p-plasma-frequency" name=omega_pe readonly="readonly">
+                    <label> [Hz]</label>
+                    <input type="text" id="p-plasma-frequency-Hz" name=omega_pe_Hz readonly="readonly">
                 </div>
-
                 <div>
-                    <label>电子回旋角频率ω<sub>ce</sub> (rad/s)</label>
+                    <label>离子等离子体频率ω<sub>pi</sub> [rad/s]</label>
+                    <input type="text" id="p-ion-plasma-frequency" name=omega_pi readonly="readonly">
+                    <label> [Hz]</label>
+                    <input type="text" id="p-ion-plasma-frequency-Hz" name=omega_pi_Hz readonly="readonly">
+                </div>
+                <div>
+                    <label>电子回旋频率ω<sub>ce</sub> [rad/s]</label>
                     <input type="text" id="p-electron-cyclotron-frequency" name=omega_ce readonly="readonly" >
+                    <label>[Hz]</label>
+                    <input type="text" id="p-electron-cyclotron-frequency-Hz" name=omega_ce_Hz readonly="readonly" >
                 </div>
-
                 <div>
-                    <label>离子回旋角频率ω<sub>ci</sub> (rad/s)</label>
+                    <label>离子回旋频率ω<sub>ci</sub> [rad/s]</label>
                     <input type="text" id="p-ion-cyclotron-frequency" name=omega_ci readonly="readonly" >
+                    <label>[Hz]</label>
+                    <input type="text" id="p-ion-cyclotron-frequency-Hz" name=omega_ci_Hz readonly="readonly" >
                 </div>
-                
 <!--                 <div>
                     <label for="elec-plasma-freq">电子碰撞频率 (Hz)</label>
                     <input type="text" id="elec-plasma-freq" name=f_pe >
                 </div>
  -->
             </form>
-            <!-- <p>说明</p>   -->
         </section>
-
         <section class="form-section-container p-output-time">
             <p><h4>时间</h4></p>
             <form class="form-container" NAME="output-time" id="p-output-time" method=POST>
                 <div>
-                    <label>逆等离子体频率ω<sub>pe</sub><sup>-1</sup></label>
+                    <label>逆等离子体频率ω<sub>pe</sub><sup>-1</sup> [s]</label>
                     <input type="text" id="p-inverse-plasma-frequency" name=inverse_omega_pe readonly="readonly" >
                 </div>
-
                 <div>
-                    <label>电子回旋周期T<sub>ce</sub> (rad/s)</label>
+                    <label>电子回旋周期T<sub>ce</sub> [s]</label>
                     <input type="text" id="p-electron-cyclotron-period" name=T_ce readonly="readonly" >
                 </div>
-
                 <div>
-                    <label>离子回旋周期T<sub>ci</sub> (rad/s)</label>
+                    <label>离子回旋周期T<sub>ci</sub> [s]</label>
                     <input type="text" id="p-ion-cyclotron-period" name=T_ci readonly="readonly" >
                 </div>
-                
             </form>
-            <!-- <p>说明</p>   -->
         </section>
-
         <section class="form-section-container p-output-length">
             <p><h4>长度</h4></p>
             <form class="form-container" name="output-length" id="p-output-length" method=post>
@@ -189,7 +166,6 @@
                 </div> -->
             </form>
         </section>
-
         <section class="form-section-container p-output-velocity">
             <p><h4>速度</h4></p>
             <form class="form-container" name="output-velocity" id="p-output-velocity" method=post>
@@ -197,34 +173,27 @@
                     <label>电子热速度v<sub>the</sub> (m/s)<br />thermal velocity<br/></label>
                     <input type="text" id="p-electron-thermal-velocity" name=v_te readonly="readonly" >
                 </div>
-                
-                <div>
-                    <label>电子最可几速度v<sub>e</sub> (m/s)<br/>most probable speed</label>
-                    <input type="text" id="p-electron-probable-speed" name=v_e readonly="readonly" >
-                </div>
-                
-                <div>
-                    <label>电子均方根速度v<sub>rmse</sub> (m/s)<br />rms velocity<br/></label>
-                    <input type="text" id="p-electron-rms-velocity" name=v_rmse readonly="readonly" >
-                </div>
-
-                <div>
-                    <p><label>电子平均速度 $\overline{v}_{\rm e} $ (m/s)<br \>mean thermal speed</label></p>
-                    <input type="text" id="p-electron-mean-velocity" name=v_meane readonly="readonly" >
-                </div>
-                
-                <div>
-                    <label>玻姆速度v<sub>bohm</sub> (m/s)<br/>Bohm velocity<br/></label>
-                    <input type="text" id="p-bohm-velocity" name=v_bohm readonly="readonly" >
-                </div>
-                
                 <div>
                     <label>离子热速度v<sub>thi</sub> (m/s)<br/>thermal velocity<br/></label>
                     <input type="text" id="p-ion-thermal-velocity" name=v_ti readonly="readonly" >
                 </div>
+                <div>
+                    <label>玻姆速度v<sub>bohm</sub> (m/s)<br/>Bohm velocity<br/></label>
+                    <input type="text" id="p-bohm-velocity" name=v_bohm readonly="readonly" >
+                </div>
+                <div>
+                    <label>电子最可几速度v<sub>e</sub> (m/s)<br/>most probable speed</label>
+                    <input type="text" id="p-electron-probable-speed" name=v_e readonly="readonly" >
+                </div>
+                <div>
+                    <label>电子均方根速度v<sub>rmse</sub> (m/s)<br />rms velocity<br/></label>
+                    <input type="text" id="p-electron-rms-velocity" name=v_rmse readonly="readonly" >
+                </div>
+                <div>
+                    <p><label>电子平均速度 $\overline{v}_{\rm e} $ (m/s)<br \>mean thermal speed</label></p>
+                    <input type="text" id="p-electron-mean-velocity" name=v_meane readonly="readonly" >
+                </div>
             </form>
-            <!-- 格式好丑，但调起来麻烦 -->
-                <p>2018.11.24 benchmark: 基于默认参数，本网页计算结果与谢华生-等离子体物理基本参数计算器.xls [1] 计算结果一致。</p>
                 </section>
         <br><br/>
         <section class="form-section-container formula">
@@ -273,9 +242,7 @@
             <p>2. 临时学了下HTML制作，如有错漏，敬请见谅。请将详细错误信息或改进意见邮件给peng_chen2016@hust.edu.cn，十分感谢！</p>
         </section>
     </main>
-
-    <!--body内的js：事件触发/调用时才执行，增大交互耗时-->
-    <!--使用内置或外置js-->    
     <script src="calculator.js"></script>
+    <!--body内的js：事件触发/调用时执行-->
 </body>
 </html>
